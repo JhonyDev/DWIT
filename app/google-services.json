@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "805035245059",
+    "project_id": "dwit-1d8e9",
+    "storage_bucket": "dwit-1d8e9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:805035245059:android:2e32443a93a4db48981836",
+        "android_client_info": {
+          "package_name": "com.app.dwit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "805035245059-c43guprr0pg2i7k54eu5f1d3gil651ei.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAily1c9_FcwF48KzZc8oQ1tmUyZX9hqs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "805035245059-c43guprr0pg2i7k54eu5f1d3gil651ei.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
