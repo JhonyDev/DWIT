@@ -1,4 +1,4 @@
-package com.app.dwit;
+package com.app.dwit.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,8 +6,8 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.app.dwit.R;
+import com.app.dwit.activities.MapsActivity;
 
 public class LoginActivity extends AppCompatActivity {
 

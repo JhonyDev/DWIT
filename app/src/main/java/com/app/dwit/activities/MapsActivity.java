@@ -1,9 +1,10 @@
-package com.app.dwit;
+package com.app.dwit.activities;
 
-import androidx.fragment.app.FragmentActivity;
-
+import android.content.Intent;
 import android.os.Bundle;
-
+import android.view.View;
+import androidx.fragment.app.FragmentActivity;
+import com.app.dwit.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -42,5 +43,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    }
+
+    public void addEvent(View view) {
+        startActivity(new Intent(this, AddEventActivity.class));
     }
 }

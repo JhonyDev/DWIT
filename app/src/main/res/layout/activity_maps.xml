@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MapsActivity">
+    tools:context=".activities.MapsActivity">
 
     <fragment
         android:id="@+id/map"
@@ -13,8 +13,6 @@
         android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-
 
     <View
         android:id="@+id/view"
@@ -70,6 +68,7 @@
         <ImageButton
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:onClick="addEvent"
             android:background="@color/greenishBlue"
             android:src="@drawable/ic_add_24px" />
 
