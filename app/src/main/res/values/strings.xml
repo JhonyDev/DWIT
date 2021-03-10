@@ -16,4 +16,12 @@
     <string name="submit">Submit</string>
     <string name="some_event">Some Event Title</string>
     <string name="participants">Participants</string>
+    <string name="user_name">User name</string>
+    <string name="events_joined">Events joined</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="sign_up">Sign up</string>
+    <string name="email">email</string>
+    <string name="login">Login</string>
+    <string name="create_account">Create Account</string>
 </resources>
