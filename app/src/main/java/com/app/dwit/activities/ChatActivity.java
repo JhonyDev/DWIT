@@ -330,6 +330,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Void aVoid) {
 
+
                 mFirebaseRemoteConfig.fetchAndActivate();
                 applyLengthLimit();
             }
