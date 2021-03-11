@@ -9,8 +9,14 @@ public class Event {
     String date;
     String startTime;
     String endTime;
+    String lat;
+    String lng;
 
-    public Event(String eventId, String imageUrl, String address, String title, String description, String date, String startTime, String endTime) {
+    public Event() {
+    }
+
+    public Event(String eventId, String imageUrl, String address, String title,
+                 String description, String date, String startTime, String endTime, String lat, String lng) {
         this.eventId = eventId;
         this.imageUrl = imageUrl;
         this.address = address;
@@ -19,6 +25,24 @@ public class Event {
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.lat = lat;
+        this.lng = lng;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
     }
 
     public String getEventId() {
@@ -28,8 +52,6 @@ public class Event {
     public void setEventId(String eventId) {
         this.eventId = eventId;
     }
-
-
 
     public String getImageUrl() {
         return imageUrl;

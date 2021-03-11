@@ -2,13 +2,17 @@ package com.app.dwit.activities;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -21,9 +25,27 @@ import androidx.core.app.ActivityCompat;
 import com.app.dwit.Info.Info;
 import com.app.dwit.R;
 import com.app.dwit.Utils.ImagePicker;
+import com.app.dwit.models.Event;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
 
 public class AddEventActivity extends AppCompatActivity implements Info {
 
@@ -43,6 +65,10 @@ public class AddEventActivity extends AppCompatActivity implements Info {
     String strEtDate;
     String strEtStartsAt;
     String strEtEndsAt;
+    String latitude;
+    String longitude;
+
+    int PLACE_PICKER_REQUEST = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +110,29 @@ public class AddEventActivity extends AppCompatActivity implements Info {
             Log.i(TAG, "onActivityResult: " + data);
 
         }
+
+        if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
+            Place place = PlacePicker.getPlace(data, this);
+            String lat = String.valueOf(place.getLatLng().latitude);
+            String lng = String.valueOf(place.getLatLng().longitude);
+            latitude = lat;
+            longitude = lng;
+            Geocoder geocoder;
+            List<Address> addresses;
+            geocoder = new Geocoder(this, Locale.getDefault());
+
+            try {
+                addresses = geocoder.getFromLocation(Double.parseDouble(lat), Double.parseDouble(lng), 1);
+                String address = addresses.get(0).getAddressLine(0);
+                etAddress.setText(address);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
+
     }
 
     public boolean isStoragePermissionGranted() {
@@ -158,6 +207,14 @@ public class AddEventActivity extends AppCompatActivity implements Info {
             Toast.makeText(this, "Please select an image", Toast.LENGTH_SHORT).show();
             return false;
         }
+        if (latitude.equals("")) {
+            Toast.makeText(this, "Please select a location again", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (longitude.equals("")) {
+            Toast.makeText(this, "Please select a location again", Toast.LENGTH_SHORT).show();
+            return false;
+        }
 
         return true;
     }
@@ -169,15 +226,66 @@ public class AddEventActivity extends AppCompatActivity implements Info {
             return;
         }
 
-        writeDataToFirebase();
-        startActivity(new Intent(this, EventDetailsActivity.class));
-        finish();
+        uploadImage(bmpEventImage);
+
     }
 
-    private void writeDataToFirebase() {
-        //TODO:
+    private void writeDataToFirebase(String url) {
+        String eventId = UUID.randomUUID().toString();
+        Event event = new Event(eventId, url, strEtAddress, strEtTitle, strEtDescription,
+                strEtDate, strEtStartsAt, strEtEndsAt, latitude, longitude);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("Events").child(eventId);
+        myRef.setValue(event);
+        Intent intent = new Intent(this, EventDetailsActivity.class);
+        intent.putExtra(KEY_EVENT_ID, eventId);
+        startActivity(intent);
+        finish();
 
 
+    }
+
+    private void uploadImage(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] data = stream.toByteArray();
+        bitmap.recycle();
+        this.bmpEventImage.recycle();
+
+        final StorageReference ref;
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        ref = FirebaseStorage.getInstance().getReference("Images").child(user.getUid());
+        final ProgressDialog pd = new ProgressDialog(this);
+        pd.setTitle("Uploading....");
+        pd.show();
+        UploadTask uploadTask = ref.putBytes(data);
+        uploadTask.addOnSuccessListener(taskSnapshot -> {
+            new Handler().postDelayed(pd::dismiss, 500);
+            Task<Uri> result = taskSnapshot.getMetadata().getReference().getDownloadUrl();
+            result.addOnSuccessListener(uri -> {
+                String urlToImage = uri.toString();
+                writeDataToFirebase(urlToImage);
+            });
+            Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
+        }).addOnFailureListener(e -> {
+            pd.dismiss();
+            Toast.makeText(getApplication(), "Uploading failed" + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }).addOnProgressListener(snapshot -> {
+            double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+            pd.setMessage("Uploaded - " + (int) progress + "%");
+        });
+
+
+    }
+
+    public void goPlacePicker(View view) {
+        try {
+            PlacePicker.IntentBuilder placePicker = new PlacePicker.IntentBuilder();
+            this.startActivityForResult(placePicker.build(this), PLACE_PICKER_REQUEST);
+        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        }
 
     }
 

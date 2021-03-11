@@ -38,6 +38,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
+            android:id="@+id/tv_event_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -133,7 +134,7 @@
         android:layout_marginBottom="10dp"
         android:background="@color/darkgreen"
         android:onClick="submit"
-        android:text="@string/submit"
+        android:text="@string/join"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
