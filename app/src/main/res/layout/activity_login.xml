@@ -8,6 +8,16 @@
     android:paddingHorizontal="20dp"
     tools:context=".activities.LoginActivity">
 
+    <ProgressBar
+        android:id="@+id/pb_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_login" />
+
     <ImageView
         android:id="@+id/iv_logo"
         android:layout_width="150dp"
@@ -30,6 +40,8 @@
         android:hint="@string/email"
         android:padding="15dp"
         android:paddingHorizontal="10dp"
+        android:textColor="@android:color/black"
+        android:textColorHint="@color/quantum_grey"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,12 +55,15 @@
         android:background="@android:color/white"
         android:hint="@string/password"
         android:padding="15dp"
+        android:textColor="@android:color/black"
+        android:textColorHint="@color/quantum_grey"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_email" />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_login"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"

@@ -26,6 +26,7 @@ import com.app.dwit.Info.Info;
 import com.app.dwit.R;
 import com.app.dwit.Utils.ImagePicker;
 import com.app.dwit.models.Event;
+import com.app.dwit.models.User;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -42,6 +43,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -232,6 +234,7 @@ public class AddEventActivity extends AppCompatActivity implements Info {
 
     private void writeDataToFirebase(String url) {
         String eventId = UUID.randomUUID().toString();
+
         Event event = new Event(eventId, url, strEtAddress, strEtTitle, strEtDescription,
                 strEtDate, strEtStartsAt, strEtEndsAt, latitude, longitude);
 

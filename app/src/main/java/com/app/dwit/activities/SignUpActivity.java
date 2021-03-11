@@ -33,7 +33,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
-import java.util.UUID;
 
 public class SignUpActivity extends AppCompatActivity implements Info {
 
@@ -174,7 +173,7 @@ public class SignUpActivity extends AppCompatActivity implements Info {
 
     private void writeDataToFirebase(String urlToImage) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        String id = UUID.randomUUID().toString();
+        String id = FirebaseAuth.getInstance().getUid();
         User user = new User(id, strEtFirstName, strEtLastName, strEtEmail,
                 strEtPassword, urlToImage);
         DatabaseReference myRef = database.getReference(USERS).child(id);

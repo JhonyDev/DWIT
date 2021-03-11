@@ -84,14 +84,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 events = new ArrayList<>();
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    Event event = postSnapshot.getValue(Event.class);
-                    LatLng sydney = new LatLng(Double.parseDouble(event.getLat()), Double.parseDouble(event.getLng()));
-                    mMap.addMarker(new MarkerOptions().position(sydney).title(event.getTitle()));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-                    events.add(event);
+
+                Log.i(TAG, "onDataChange: " + dataSnapshot);
+                try {
+
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        Event event = postSnapshot.getValue(Event.class);
+                        LatLng sydney = new LatLng(Double.parseDouble(event.getLat()), Double.parseDouble(event.getLng()));
+                        mMap.addMarker(new MarkerOptions().position(sydney).title(event.getTitle()));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+                        events.add(event);
+                    }
+                    mMap.setOnMarkerClickListener(MapsActivity.this);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.i(TAG, "onDataChange: " + e);
+                    Toast.makeText(MapsActivity.this, "no Event", Toast.LENGTH_SHORT).show();
                 }
-                mMap.setOnMarkerClickListener(MapsActivity.this);
 
             }
 
@@ -121,10 +130,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             intent.putExtra(KEY_EVENT_ID, events.get(markerId).getEventId());
             startActivity(intent);
 
+        } else {
+
+            Toast.makeText(this, "Click the marker again for details", Toast.LENGTH_SHORT).show();
         }
         handler.removeCallbacks(runnable);
         firstClick = false;
-        handler.postDelayed(runnable, 1000);
+        handler.postDelayed(runnable, 2000);
         return false;
     }
 }

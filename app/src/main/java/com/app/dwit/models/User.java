@@ -8,6 +8,9 @@ public class User {
     String password;
     String urlToImage;
 
+    public User() {
+    }
+
     public User(String id, String firstName, String lastName,
                 String email, String password, String urlToImage) {
         this.id = id;
