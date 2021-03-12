@@ -1,13 +1,18 @@
 package com.app.dwit.activities;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.FragmentActivity;
 
 import com.app.dwit.Info.Info;
@@ -20,7 +25,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,30 +36,30 @@ import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Info {
 
+    public static Activity main;
     List<Event> events;
     boolean firstClick = true;
     Runnable runnable = () -> {
         firstClick = true;
     };
     Handler handler;
+    EditText etAddress;
+    ProgressBar progressBar;
     private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        main = this;
         handler = new Handler();
+        etAddress = findViewById(R.id.address);
+        progressBar = findViewById(R.id.progress_bar);
+        progressBar.setVisibility(View.VISIBLE);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Toast.makeText(this, "Signing out", Toast.LENGTH_SHORT).show();
-        FirebaseAuth.getInstance().signOut();
     }
 
     /**
@@ -74,22 +78,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Add a marker in Sydney and move the camera
         getEvents();
 
-
     }
 
     private void getEvents() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("Events");
         myRef.addValueEventListener(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 events = new ArrayList<>();
 
                 Log.i(TAG, "onDataChange: " + dataSnapshot);
                 try {
-
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                         Event event = postSnapshot.getValue(Event.class);
+
+                        long end = Long.parseLong(event.getEndTimeInMillis());
+                        long curr = System.currentTimeMillis();
+
+                        if (end < curr) {
+                            postSnapshot.getRef().removeValue();
+                            Log.i(TAG, "onDataChange: Event Removed");
+                            return;
+                        }
+
+                        progressBar.setVisibility(View.GONE);
+
+
                         LatLng sydney = new LatLng(Double.parseDouble(event.getLat()), Double.parseDouble(event.getLng()));
                         mMap.addMarker(new MarkerOptions().position(sydney).title(event.getTitle()));
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
@@ -117,6 +133,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public boolean onMarkerClick(Marker marker) {
         int markerId = Integer.parseInt(marker.getId().replace('m', '0'));
+        etAddress.setText(events.get(markerId).getAddress());
         Log.i(TAG, "onMarkerClick: " + markerId);
         try {
             Log.i(TAG, "onMarkerClick: " + events.get(markerId).getTitle());
@@ -142,5 +159,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void messages(View view) {
         startActivity(new Intent(this, ChatListActivity.class));
+    }
+
+    public void showSettings(View view) {
+        startActivity(new Intent(this, SettingsActivity.class));
     }
 }

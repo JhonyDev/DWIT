@@ -25,8 +25,7 @@ public class MessageAdapter extends ArrayAdapter<FriendlyMessage> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         if (convertView == null) {
-            String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            if (getItem(position).getFromUser().equals(currentUserId))
+            if (getItem(position).isShowOnRight())
                 convertView = ((Activity) getContext()).getLayoutInflater().inflate(R.layout.item_message_sender, parent, false);
             else
                 convertView = ((Activity) getContext()).getLayoutInflater().inflate(R.layout.item_message, parent, false);

@@ -3,6 +3,7 @@ package com.app.dwit.models;
 
 public class FriendlyMessage extends Super {
 
+    boolean showOnRight = false;
     private String messageId;
     private String text;
     private String fromUser;
@@ -26,6 +27,14 @@ public class FriendlyMessage extends Super {
         this.toUser = toUser;
         this.conversationId = conversationId;
         this.fromUserProfilePic = fromUserProfilePic;
+    }
+
+    public boolean isShowOnRight() {
+        return showOnRight;
+    }
+
+    public void setShowOnRight(boolean showOnRight) {
+        this.showOnRight = showOnRight;
     }
 
     public String getConversationId() {

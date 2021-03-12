@@ -26,7 +26,6 @@ import com.app.dwit.Info.Info;
 import com.app.dwit.R;
 import com.app.dwit.Utils.ImagePicker;
 import com.app.dwit.models.Event;
-import com.app.dwit.models.User;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -43,7 +42,6 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -71,6 +69,7 @@ public class AddEventActivity extends AppCompatActivity implements Info {
     String longitude;
 
     int PLACE_PICKER_REQUEST = 123;
+    String endTimeInMillis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -236,7 +235,7 @@ public class AddEventActivity extends AppCompatActivity implements Info {
         String eventId = UUID.randomUUID().toString();
 
         Event event = new Event(eventId, url, strEtAddress, strEtTitle, strEtDescription,
-                strEtDate, strEtStartsAt, strEtEndsAt, latitude, longitude);
+                strEtDate, strEtStartsAt, strEtEndsAt, latitude, longitude, endTimeInMillis);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("Events").child(eventId);
@@ -310,7 +309,6 @@ public class AddEventActivity extends AppCompatActivity implements Info {
 
     }
 
-
     public void showTimePicker(View view) {
         Calendar mCurrentTime = Calendar.getInstance();
         int hour = mCurrentTime.get(Calendar.HOUR_OF_DAY);
@@ -332,6 +330,16 @@ public class AddEventActivity extends AppCompatActivity implements Info {
         mTimePicker = new TimePickerDialog(this, (timePicker, selectedHour, selectedMinute) -> {
             String endTime = selectedHour + ":" + selectedMinute;
             etEndsAt.setText(endTime);
+
+            final Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, selectedHour);
+            calendar.set(Calendar.MINUTE, selectedMinute);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+
+            endTimeInMillis = String.valueOf(calendar.getTimeInMillis());
+
+
         }, hour, minute, true);
         mTimePicker.setTitle("Select Time");
         mTimePicker.show();

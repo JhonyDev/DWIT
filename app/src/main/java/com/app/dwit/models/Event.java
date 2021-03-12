@@ -1,7 +1,5 @@
 package com.app.dwit.models;
 
-import java.util.List;
-
 public class Event {
     String eventId;
     String imageUrl;
@@ -13,23 +11,33 @@ public class Event {
     String endTime;
     String lat;
     String lng;
+    String endTimeInMillis;
 
     public Event() {
     }
 
     public Event(String eventId, String imageUrl, String address, String title, String description,
                  String date, String startTime, String endTime, String lat,
-                 String lng) {
+                 String lng, String endTimeInMillis) {
         this.eventId = eventId;
         this.imageUrl = imageUrl;
         this.address = address;
         this.title = title;
+        this.endTimeInMillis = endTimeInMillis;
         this.description = description;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
         this.lat = lat;
         this.lng = lng;
+    }
+
+    public String getEndTimeInMillis() {
+        return endTimeInMillis;
+    }
+
+    public void setEndTimeInMillis(String endTimeInMillis) {
+        this.endTimeInMillis = endTimeInMillis;
     }
 
     public String getLat() {

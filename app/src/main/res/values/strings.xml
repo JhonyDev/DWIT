@@ -32,5 +32,6 @@
     <string name="my_chats">My Chats</string>
     <string name="search">Search</string>
     <string name="image_message">image message</string>
+    <string name="sign_out">Sign out</string>
 
 </resources>

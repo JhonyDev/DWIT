@@ -28,8 +28,8 @@
         android:id="@+id/ib_message"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:onClick="messages"
         android:background="@android:color/transparent"
+        android:onClick="messages"
         android:src="@drawable/ic_message_24px"
         app:layout_constraintBottom_toBottomOf="@id/view"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,17 +40,24 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@android:color/transparent"
-        android:src="@drawable/ic_setting"
+        android:onClick="showSettings"
+        android:padding="7dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_settings_24px"
         app:layout_constraintBottom_toBottomOf="@id/view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
+        android:id="@+id/address"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="5dp"
         android:background="@android:color/white"
-        android:hint="@string/search"
+        android:focusableInTouchMode="false"
+        android:hint="@string/address"
+        android:inputType="text"
+        android:maxLines="1"
         android:paddingHorizontal="10dp"
         android:textColorHint="@color/quantum_grey"
         app:layout_constraintBottom_toBottomOf="@id/view"
@@ -58,8 +65,19 @@
         app:layout_constraintStart_toEndOf="@id/ib_message"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/fab"
+        app:layout_constraintEnd_toEndOf="@id/fab"
+        app:layout_constraintStart_toStartOf="@id/fab" />
+
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/fab"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginBottom="25dp"

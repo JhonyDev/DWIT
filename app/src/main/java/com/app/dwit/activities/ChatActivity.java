@@ -160,6 +160,10 @@ public class ChatActivity extends AppCompatActivity implements Info {
     private void setFromAndTo(String toUserId) {
         fromUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         this.toUserId = toUserId;
+
+        if (fromUserId.equals(toUserId))
+            finish();
+
         userList = new ArrayList<>();
         userList.clear();
         userList.add(fromUserId);
@@ -327,6 +331,8 @@ public class ChatActivity extends AppCompatActivity implements Info {
                 friendlyMessages.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     FriendlyMessage friendlyMessage = snapshot.getValue(FriendlyMessage.class);
+                    String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    friendlyMessage.setShowOnRight(friendlyMessage.getFromUser().equals(currentUserId));
                     friendlyMessages.add(friendlyMessage);
                 }
 //                mMessageAdapter.notifyDataSetChanged();
