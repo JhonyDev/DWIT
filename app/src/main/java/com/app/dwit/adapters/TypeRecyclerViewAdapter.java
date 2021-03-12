@@ -16,6 +16,7 @@ import com.app.dwit.activities.ChatActivity;
 import com.app.dwit.models.FriendlyMessage;
 import com.app.dwit.models.Super;
 import com.app.dwit.models.User;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -64,7 +65,7 @@ public class TypeRecyclerViewAdapter extends RecyclerView.Adapter<TypeRecyclerVi
             holder.tvUserName.setTextColor(context.getResources().getColor(R.color.black));
             holder.ivUserProfile.setImageURI(friendlyMessage.getFromUserProfilePic());
             holder.tvLastText.setText(friendlyMessage.getText());
-            holder.ibTouchField.setOnClickListener(v -> startChatActivity(friendlyMessage.getToUser()));
+            holder.ibTouchField.setOnClickListener(v -> startChatActivity(friendlyMessage.getFromUser()));
         }
     }
 
@@ -82,6 +83,7 @@ public class TypeRecyclerViewAdapter extends RecyclerView.Adapter<TypeRecyclerVi
     @Override
     public int getItemViewType(int position) {
         return 0;
+
     }
 
 }

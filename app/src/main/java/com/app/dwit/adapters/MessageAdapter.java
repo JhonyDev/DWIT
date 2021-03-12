@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.app.dwit.R;
 import com.app.dwit.models.FriendlyMessage;
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -22,13 +23,18 @@ public class MessageAdapter extends ArrayAdapter<FriendlyMessage> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         if (convertView == null) {
-            convertView = ((Activity) getContext()).getLayoutInflater().inflate(R.layout.item_message, parent, false);
+            String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            if (getItem(position).getFromUser().equals(currentUserId))
+                convertView = ((Activity) getContext()).getLayoutInflater().inflate(R.layout.item_message_sender, parent, false);
+            else
+                convertView = ((Activity) getContext()).getLayoutInflater().inflate(R.layout.item_message, parent, false);
         }
 
         ImageView photoImageView = convertView.findViewById(R.id.photoImageView);
-        TextView messageTextView =  convertView.findViewById(R.id.messageTextView);
-        TextView authorTextView =  convertView.findViewById(R.id.nameTextView);
+        TextView messageTextView = convertView.findViewById(R.id.messageTextView);
+        TextView authorTextView = convertView.findViewById(R.id.nameTextView);
 
         FriendlyMessage message = getItem(position);
 

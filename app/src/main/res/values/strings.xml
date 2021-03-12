@@ -31,5 +31,6 @@
     <string name="join">Join</string>
     <string name="my_chats">My Chats</string>
     <string name="search">Search</string>
+    <string name="image_message">image message</string>
 
 </resources>

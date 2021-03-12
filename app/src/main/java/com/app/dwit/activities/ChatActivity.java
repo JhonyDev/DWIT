@@ -13,11 +13,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -69,12 +69,13 @@ public class ChatActivity extends AppCompatActivity implements Info {
     String toUserId;
     String conversationId = "";
     List<String> userList;
+    TextView tvTitle;
     private ListView mMessageListView;
     private MessageAdapter mMessageAdapter;
     private ProgressBar mProgressBar;
     private ImageButton mPhotoPickerButton;
     private EditText mMessageEditText;
-    private Button mSendButton;
+    private ImageButton mSendButton;
     private String mUsername;
     private FirebaseDatabase mFireDb;
     private DatabaseReference mMessageDbReference;
@@ -94,6 +95,7 @@ public class ChatActivity extends AppCompatActivity implements Info {
 
         checkIntent();
 
+        tvTitle = findViewById(R.id.title);
         mFireDb = FirebaseDatabase.getInstance();
         mFireStorage = FirebaseStorage.getInstance();
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
@@ -225,6 +227,8 @@ public class ChatActivity extends AppCompatActivity implements Info {
                 User value = dataSnapshot.getValue(User.class);
                 if (i == 1) {
                     toUser = value;
+                    String userName = toUser.getFirstName() + " " + toUser.getLastName();
+                    tvTitle.setText(userName);
                     String fromUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                     setUser(2, fromUserId);
                 } else {
@@ -314,10 +318,8 @@ public class ChatActivity extends AppCompatActivity implements Info {
     }
 
     void attachDatabaseReadListener() {
-
         Log.i(TAG, "attachDatabaseReadListener: ");
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        String fromUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference myRef = database.getReference("Conversations").child(conversationId);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -325,11 +327,11 @@ public class ChatActivity extends AppCompatActivity implements Info {
                 friendlyMessages.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     FriendlyMessage friendlyMessage = snapshot.getValue(FriendlyMessage.class);
-                    Log.i(TAG, "onChildAdded: Text : " + friendlyMessage.getText());
-                    Log.i(TAG, "onChildAdded: Author : " + friendlyMessage.getFromUser());
                     friendlyMessages.add(friendlyMessage);
                 }
-                mMessageAdapter.notifyDataSetChanged();
+//                mMessageAdapter.notifyDataSetChanged();
+                mMessageListView.setAdapter(mMessageAdapter);
+
             }
 
             @Override
