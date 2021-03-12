@@ -12,7 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="0dp" />
 
     <View
         android:id="@+id/view"
@@ -26,11 +28,12 @@
         android:id="@+id/ib_message"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:onClick="messages"
         android:background="@android:color/transparent"
         android:src="@drawable/ic_message_24px"
+        app:layout_constraintBottom_toBottomOf="@id/view"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/view"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/ib_setting"
@@ -38,16 +41,19 @@
         android:layout_height="50dp"
         android:background="@android:color/transparent"
         android:src="@drawable/ic_setting"
+        app:layout_constraintBottom_toBottomOf="@id/view"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/view"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="@id/view"
         android:layout_margin="5dp"
+        android:background="@android:color/white"
+        android:hint="@string/search"
+        android:paddingHorizontal="10dp"
+        android:textColorHint="@color/quantum_grey"
+        app:layout_constraintBottom_toBottomOf="@id/view"
         app:layout_constraintEnd_toStartOf="@id/ib_setting"
         app:layout_constraintStart_toEndOf="@id/ib_message"
         app:layout_constraintTop_toTopOf="parent" />
@@ -68,8 +74,8 @@
         <ImageButton
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:onClick="addEvent"
             android:background="@color/greenishBlue"
+            android:onClick="addEvent"
             android:src="@drawable/ic_add_24px" />
 
     </com.google.android.material.card.MaterialCardView>

@@ -139,4 +139,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         handler.postDelayed(runnable, 2000);
         return false;
     }
+
+    public void messages(View view) {
+        startActivity(new Intent(this, ChatListActivity.class));
+    }
 }

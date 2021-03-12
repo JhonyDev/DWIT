@@ -4,6 +4,9 @@ public interface Info {
 
     int REQUEST_CODE = 99;
 
+    int TYPE_MESSAGE = 1;
+    int TYPE_USER = 2;
+
     String KEY_EVENT_ID = "event_id";
 
     String KEY_TARGET_USER_ID = "TARGET_USER_ID";

@@ -1,4 +1,4 @@
-package com.app.dwit.chat;
+package com.app.dwit.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.dwit.R;
+import com.app.dwit.models.FriendlyMessage;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -43,7 +44,8 @@ public class MessageAdapter extends ArrayAdapter<FriendlyMessage> {
             photoImageView.setVisibility(View.GONE);
             messageTextView.setText(message.getText());
         }
-        authorTextView.setText(message.getName());
+        authorTextView.setText(message.getFromUserName());
+
 
         return convertView;
     }

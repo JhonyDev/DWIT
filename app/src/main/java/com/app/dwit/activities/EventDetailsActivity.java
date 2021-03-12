@@ -14,6 +14,7 @@ import com.app.dwit.Info.Info;
 import com.app.dwit.R;
 import com.app.dwit.adapters.TypeRecyclerViewAdapter;
 import com.app.dwit.models.Event;
+import com.app.dwit.models.Super;
 import com.app.dwit.models.User;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +36,7 @@ public class EventDetailsActivity extends AppCompatActivity implements Info {
     String eventId;
     Event event;
     RecyclerView recyclerView;
-    List<User> userList;
+    List<Super> userList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +69,7 @@ public class EventDetailsActivity extends AppCompatActivity implements Info {
                     userList.add(user);
                 }
                 TypeRecyclerViewAdapter typeRecyclerViewAdapter = new
-                        TypeRecyclerViewAdapter(EventDetailsActivity.this, userList);
+                        TypeRecyclerViewAdapter(EventDetailsActivity.this, userList, TYPE_USER);
                 typeRecyclerViewAdapter.notifyDataSetChanged();
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(EventDetailsActivity.this);
                 recyclerView.setLayoutManager(linearLayoutManager);

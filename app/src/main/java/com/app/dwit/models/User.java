@@ -1,6 +1,6 @@
 package com.app.dwit.models;
 
-public class User {
+public class User extends Super {
     String id;
     String firstName;
     String lastName;
