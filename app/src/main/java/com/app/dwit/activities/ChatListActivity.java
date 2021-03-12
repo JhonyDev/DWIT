@@ -66,10 +66,14 @@ public class ChatListActivity extends AppCompatActivity implements Info {
                         Log.i(TAG, "onDataChange: to Id : " + message.getToUser());
                         Log.i(TAG, "onDataChange: from Id : " + message.getFromUser());
                         Log.i(TAG, "............. : ");
+                        if (message.getFromUser().equals(currentUserId)) {
+                            continue;
+                        }
+
+
                         if (currentUserId.equals(message.getToUser()) | currentUserId.equals(message.getFromUser())) {
                             usersFromList.add(message.getFromUser());
                             friendlyMessageList.add(message);
-
                         }
                         break;
                     }

@@ -152,7 +152,6 @@ public class ChatActivity extends AppCompatActivity implements Info {
             setFromAndTo(userId);
             Log.i(TAG, "onDataChange: " + userList);
             setUser(1, userId);
-
         }
     }
 
