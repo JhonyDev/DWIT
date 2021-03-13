@@ -89,6 +89,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 events = new ArrayList<>();
 
+                progressBar.setVisibility(View.GONE);
+
                 Log.i(TAG, "onDataChange: " + dataSnapshot);
                 try {
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
@@ -102,9 +104,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             Log.i(TAG, "onDataChange: Event Removed");
                             return;
                         }
-
-                        progressBar.setVisibility(View.GONE);
-
 
                         LatLng sydney = new LatLng(Double.parseDouble(event.getLat()), Double.parseDouble(event.getLng()));
                         mMap.addMarker(new MarkerOptions().position(sydney).title(event.getTitle()));

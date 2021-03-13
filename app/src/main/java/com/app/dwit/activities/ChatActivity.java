@@ -181,18 +181,11 @@ public class ChatActivity extends AppCompatActivity implements Info {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     for (DataSnapshot ss : snapshot.getChildren()) {
                         FriendlyMessage friendlyMessage = ss.getValue(FriendlyMessage.class);
-                        Log.i(TAG, "onDataChange: from User (list) : " + userList.get(0));
-                        Log.i(TAG, "onDataChange: to user (list): " + userList.get(1));
-                        Log.i(TAG, "onDataChange: from User (database) : " + friendlyMessage.getFromUser());
-                        Log.i(TAG, "onDataChange: to user (database): " + friendlyMessage.getToUser());
-                        Log.i(TAG, "onDataChange: ...............................");
-
                         if (
                                 userList.get(0).equals(friendlyMessage.getFromUser()) &&
                                         userList.get(1).equals(friendlyMessage.getToUser())
                                         || userList.get(1).equals(friendlyMessage.getFromUser()) &&
                                         userList.get(0).equals(friendlyMessage.getToUser())
-
                         ) {
                             Log.i(TAG, "onDataChange: condition true");
                             conversationId = friendlyMessage.getConversationId();
