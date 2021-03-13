@@ -1,6 +1,6 @@
 package com.app.dwit.models;
 
-public class Event {
+public class Event extends Super {
     String eventId;
     String imageUrl;
     String address;

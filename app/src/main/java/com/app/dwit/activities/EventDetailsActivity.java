@@ -74,7 +74,6 @@ public class EventDetailsActivity extends AppCompatActivity implements Info {
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(EventDetailsActivity.this);
                 recyclerView.setLayoutManager(linearLayoutManager);
                 recyclerView.setAdapter(typeRecyclerViewAdapter);
-
             }
 
             @Override

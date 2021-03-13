@@ -13,10 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.app.dwit.Info.Info;
 import com.app.dwit.R;
 import com.app.dwit.activities.ChatActivity;
+import com.app.dwit.activities.EventsJoinedActivity;
+import com.app.dwit.models.Event;
 import com.app.dwit.models.FriendlyMessage;
 import com.app.dwit.models.Super;
 import com.app.dwit.models.User;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -41,12 +42,10 @@ public class TypeRecyclerViewAdapter extends RecyclerView.Adapter<TypeRecyclerVi
         LayoutInflater li = LayoutInflater.from(context);
         View view = li.inflate(R.layout.rv_user_detail, parent, false);
         return new TypeRecyclerViewHolder(view);
-
     }
 
     @Override
     public void onBindViewHolder(@NonNull final TypeRecyclerViewHolder holder, int position) {
-
         if (type == TYPE_USER) {
             User user = (User) listInstances.get(position);
             String userName = user.getFirstName() + " " + user.getLastName();
@@ -62,14 +61,31 @@ public class TypeRecyclerViewAdapter extends RecyclerView.Adapter<TypeRecyclerVi
             Log.i(TAG, "onBindViewHolder: " + friendlyMessage.getFromUserName());
             holder.tvUserName.setText(friendlyMessage.getFromUserName());
             holder.tvUserName.setVisibility(View.VISIBLE);
-            holder.tvUserName.setTextColor(context.getResources().getColor(R.color.black));
+            holder.tvUserName.setTextColor(context.getColor(R.color.black));
             holder.ivUserProfile.setImageURI(friendlyMessage.getFromUserProfilePic());
             holder.tvLastText.setText(friendlyMessage.getText());
-            holder.ibTouchField.setOnClickListener(v -> startChatActivity(friendlyMessage.getFromUser()));
+            holder.ibTouchField.setOnClickListener(v -> startChatActivity(friendlyMessage.getFromUser(), 1));
+            return;
         }
+
+        if (type == TYPE_EVENTS) {
+            Event event = (Event) listInstances.get(position);
+            holder.ivUserProfile.setImageURI(event.getImageUrl());
+            holder.tvUserName.setText(event.getTitle());
+            holder.tvUserName.setTextColor(context.getColor(R.color.black));
+            holder.tvLastText.setVisibility(View.GONE);
+            holder.tvLastText.setText("");
+        }
+
     }
 
     private void startChatActivity(String userId) {
+        Intent intent = new Intent(context, EventsJoinedActivity.class);
+        intent.putExtra(KEY_TARGET_USER_ID, userId);
+        context.startActivity(intent);
+    }
+
+    private void startChatActivity(String userId, int a) {
         Intent intent = new Intent(context, ChatActivity.class);
         intent.putExtra(KEY_TARGET_USER_ID, userId);
         context.startActivity(intent);
@@ -83,7 +99,6 @@ public class TypeRecyclerViewAdapter extends RecyclerView.Adapter<TypeRecyclerVi
     @Override
     public int getItemViewType(int position) {
         return 0;
-
     }
 
 }

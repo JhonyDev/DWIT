@@ -21,7 +21,6 @@
     <string name="enter_message">Enter Message</string>
 
     <string name="user_name">User name</string>
-    <string name="events_joined">Events joined</string>
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
     <string name="sign_up">Sign up</string>
@@ -33,5 +32,8 @@
     <string name="search">Search</string>
     <string name="image_message">image message</string>
     <string name="sign_out">Sign out</string>
+    <string name="contact">Contact</string>
+    <string name="send_message">Send Message</string>
+    <string name="events_joined">Events joined</string>
 
 </resources>
