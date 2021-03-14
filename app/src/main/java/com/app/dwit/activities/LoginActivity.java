@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity implements Info {
             return false;
         }
 
-        if (!strEtEmail.contains("@") | !strEtEmail.contains(".com")) {
+        if (!strEtEmail.contains("@") | !strEtEmail.contains(".")) {
             etEmail.setError("Invalid Email");
             return false;
         }

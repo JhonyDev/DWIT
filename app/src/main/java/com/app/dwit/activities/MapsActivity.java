@@ -3,11 +3,14 @@ package com.app.dwit.activities;
 import android.app.Activity;
 import android.app.Notification;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -36,10 +39,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Info {
 
@@ -57,6 +62,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     List<Event> eventList;
     NotificationManagerCompat notificationManagerCompat;
     boolean isFirstNotification = true;
+    ProgressBar pbSearch;
     private GoogleMap mMap;
 
     @Override
@@ -68,15 +74,64 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         etAddress = findViewById(R.id.address);
         progressBar = findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.VISIBLE);
+        pbSearch = findViewById(R.id.pb_search);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+        assert mapFragment != null;
         mapFragment.getMapAsync(this);
 
         initNotification();
 
 
     }
+
+    private void performSearch() {
+        Log.i(TAG, "performSearch: ");
+        String address = etAddress.getText().toString();
+        if (address.equals("")) {
+            Toast.makeText(main, "Please type a location", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        double lat = getLat(address);
+        double lng = getLng(address);
+        LatLng latLng = new LatLng(lat, lng);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        new Handler().postDelayed(() -> {
+            pbSearch.setVisibility(View.GONE);
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(9), 1500, null);
+        }, 500);
+    }
+
+    private double getLat(String addressMain) {
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocationName(addressMain, 1);
+            Log.i(TAG, "onCreate: " + addresses.get(0).getLatitude() + " " + addresses.get(0).getLongitude());
+            for (Address address : addresses) {
+                return address.getLatitude();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    private double getLng(String addressMain) {
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocationName(addressMain, 1);
+            Log.i(TAG, "onCreate: " + addresses.get(0).getLatitude() + " " + addresses.get(0).getLongitude());
+            for (Address address : addresses) {
+                return address.getLongitude();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
 
     private void initNotification() {
         initOrderList();
@@ -178,6 +233,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         // Add a marker in Sydney and move the camera
+
+        etAddress.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                performSearch();
+                pbSearch.setVisibility(View.VISIBLE);
+                return true;
+            }
+            return false;
+        });
         getEvents();
 
     }
@@ -230,8 +294,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public boolean onMarkerClick(Marker marker) {
         int markerId = Integer.parseInt(marker.getId().replace('m', '0'));
-        etAddress.setText(events.get(markerId).getAddress());
+//        etAddress.setText(events.get(markerId).getAddress());
         Log.i(TAG, "onMarkerClick: " + markerId);
+
         try {
             Log.i(TAG, "onMarkerClick: " + events.get(markerId).getTitle());
         } catch (Exception e) {

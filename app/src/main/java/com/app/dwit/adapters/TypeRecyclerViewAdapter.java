@@ -51,7 +51,7 @@ public class TypeRecyclerViewAdapter extends RecyclerView.Adapter<TypeRecyclerVi
             String userName = user.getFirstName() + " " + user.getLastName();
             holder.tvUserName.setText(userName);
             holder.ivUserProfile.setImageURI(user.getUrlToImage());
-            holder.ibTouchField.setOnClickListener(v -> startChatActivity(user.getId()));
+            holder.ibTouchField.setOnClickListener(v -> startChatActivity(user));
             holder.tvLastText.setVisibility(View.GONE);
             return;
         }
@@ -79,9 +79,11 @@ public class TypeRecyclerViewAdapter extends RecyclerView.Adapter<TypeRecyclerVi
 
     }
 
-    private void startChatActivity(String userId) {
+    private void startChatActivity(User userId) {
         Intent intent = new Intent(context, EventsJoinedActivity.class);
-        intent.putExtra(KEY_TARGET_USER_ID, userId);
+        intent.putExtra(KEY_TARGET_USER_ID, userId.getId());
+        String userName = userId.getFirstName() + " " + userId.getLastName();
+        intent.putExtra("USERNAME", userName);
         context.startActivity(intent);
     }
 

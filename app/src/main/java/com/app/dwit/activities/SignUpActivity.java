@@ -16,8 +16,10 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 
+import com.app.dwit.BuildConfig;
 import com.app.dwit.Info.Info;
 import com.app.dwit.R;
 import com.app.dwit.Utils.ImagePicker;
@@ -205,7 +207,7 @@ public class SignUpActivity extends AppCompatActivity implements Info {
             return false;
         }
 
-        if (!strEtEmail.contains("@") | !strEtEmail.contains(".com")) {
+        if (!strEtEmail.contains("@") | !strEtEmail.contains(".")) {
             etEmail.setError("Invalid Email");
             return false;
         }

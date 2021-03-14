@@ -46,6 +46,8 @@ public class EventsJoinedActivity extends AppCompatActivity implements Info {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             userId = bundle.get(KEY_TARGET_USER_ID).toString();
+            String username = bundle.get("USERNAME").toString();
+            tvUserName.setText(username);
         }
         initRecyclerView();
 
@@ -64,6 +66,7 @@ public class EventsJoinedActivity extends AppCompatActivity implements Info {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     for (DataSnapshot childSnapshot : snapshot.getChildren()) {
                         User user = childSnapshot.getValue(User.class);
+                        assert user != null;
                         String userName = user.getFirstName() + " " + user.getLastName();
                         tvUserName.setText(userName);
                         Log.i(TAG, "onDataChange: " + user.getId());

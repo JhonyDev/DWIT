@@ -1,7 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.DWIT" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.DWIT" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
+        <item name="android:forceDarkAllowed">false</item>
         <item name="colorPrimary">#448AC2</item>
         <item name="colorPrimaryVariant">@color/greenishBlue</item>
         <item name="colorOnPrimary">@color/white</item>
