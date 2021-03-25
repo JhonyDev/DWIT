@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,6 +18,8 @@ import com.app.dwit.adapters.TypeRecyclerViewAdapter;
 import com.app.dwit.models.Event;
 import com.app.dwit.models.Super;
 import com.app.dwit.models.User;
+import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,18 +39,27 @@ public class EventsJoinedActivity extends AppCompatActivity implements Info {
     List<String> eventIdList;
     TextView tvUserName;
 
+    MaterialCardView cvBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events_joined);
 
         tvUserName = findViewById(R.id.user_name);
+        cvBtn = findViewById(R.id.btn);
+
         tvUserName.setText("");
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             userId = bundle.get(KEY_TARGET_USER_ID).toString();
             String username = bundle.get("USERNAME").toString();
             tvUserName.setText(username);
+
+            if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(userId)) {
+                cvBtn.setVisibility(View.GONE);
+            }
+
         }
         initRecyclerView();
 

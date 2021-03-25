@@ -1,6 +1,7 @@
 package com.app.dwit.activities;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
@@ -39,6 +40,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.sucho.placepicker.AddressData;
+import com.sucho.placepicker.Constants;
+import com.sucho.placepicker.MapType;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -46,6 +50,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+
+import static com.sucho.placepicker.Constants.GOOGLE_API_KEY;
 
 public class AddEventActivity extends AppCompatActivity implements Info {
 
@@ -111,6 +117,32 @@ public class AddEventActivity extends AppCompatActivity implements Info {
             Log.i(TAG, "onActivityResult: " + data);
 
         }
+
+        if (requestCode == 1122) {
+            if (resultCode == Activity.RESULT_OK && data != null) {
+                AddressData addressData = data.getParcelableExtra(Constants.ADDRESS_INTENT);
+                latitude = String.valueOf(addressData.getLatitude());
+                longitude = String.valueOf(addressData.getLongitude());
+                Geocoder geocoder;
+                List<Address> addresses;
+                geocoder = new Geocoder(this, Locale.getDefault());
+
+                try {
+                    addresses = geocoder.getFromLocation(addressData.getLatitude(), addressData.getLongitude(),1);
+                    String address = addresses.get(0).getAddressLine(0);
+                    etAddress.setText(address);
+
+                    Log.i(TAG, "onActivityResult: " + address);
+                    Log.i(TAG, "onActivityResult: " + latitude);
+                    Log.i(TAG, "onActivityResult: " + longitude);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+
 
         if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
             Place place = PlacePicker.getPlace(data, this);
@@ -282,12 +314,29 @@ public class AddEventActivity extends AppCompatActivity implements Info {
     }
 
     public void goPlacePicker(View view) {
-        try {
-            PlacePicker.IntentBuilder placePicker = new PlacePicker.IntentBuilder();
-            this.startActivityForResult(placePicker.build(this), PLACE_PICKER_REQUEST);
-        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
-            e.printStackTrace();
-        }
+        Intent intent = new com.sucho.placepicker.PlacePicker.IntentBuilder()
+//                .setLatLong(40.748672, -73.985628)  // Initial Latitude and Longitude the Map will load into
+                .showLatLong(true)  // Show Coordinates in the Activity
+                .setMapZoom(1.0f)  // Map Zoom Level. Default: 14.0
+                .setAddressRequired(true) // Set If return only Coordinates if cannot fetch Address for the coordinates. Default: True
+                .hideMarkerShadow(true) // Hides the shadow under the map marker. Default: False
+                .setMarkerDrawable(R.drawable.ic__78111_map_marker_512) // Change the default Marker Image
+//                .setMarkerImageImageColor(R.color.red)
+//                .setMapRawResourceStyle(R.raw.map_style)  //Set Map Style (https://mapstyle.withgoogle.com/)
+                .setMapType(MapType.NORMAL)
+                .setPlaceSearchBar(true, GOOGLE_API_KEY) //Activate GooglePlace Search Bar. Default is false/not activated. SearchBar is a chargeable feature by Google
+                .onlyCoordinates(true)  //Get only Coordinates from Place Picker
+                .hideLocationButton(true)   //Hide Location Button (Default: false)
+                .disableMarkerAnimation(true)   //Disable Marker Animation (Default: false)
+                .build(this);
+        startActivityForResult(intent, 1122);
+
+        //        try {
+//            PlacePicker.IntentBuilder placePicker = new PlacePicker.IntentBuilder();
+//            this.startActivityForResult(placePicker.build(this), PLACE_PICKER_REQUEST);
+//        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+//            e.printStackTrace();
+//        }
 
     }
 

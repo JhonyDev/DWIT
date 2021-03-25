@@ -21,6 +21,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DWIT">
         <activity
+            android:name="com.sucho.placepicker.PlacePickerActivity"
+            android:theme="@style/PlacePickerTheme"/>
+        <activity
             android:name=".activities.EventsJoinedActivity"/>
         <activity android:name=".activities.SettingsActivity" />
         <activity android:name=".activities.ChatListActivity" />
