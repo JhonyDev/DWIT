@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "805035245059",
-    "project_id": "dwit-1d8e9",
-    "storage_bucket": "dwit-1d8e9.appspot.com"
+    "project_number": "662510283096",
+    "project_id": "earning-app-6fc71",
+    "storage_bucket": "earning-app-6fc71.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:805035245059:android:2e32443a93a4db48981836",
+        "mobilesdk_app_id": "1:662510283096:android:b2b5d28a4b6a1129dd9d2d",
         "android_client_info": {
           "package_name": "com.app.dwit"
         }
       },
       "oauth_client": [
         {
-          "client_id": "805035245059-c43guprr0pg2i7k54eu5f1d3gil651ei.apps.googleusercontent.com",
+          "client_id": "662510283096-v3af01lvcirtloe5e9cehl6bbjm23oof.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCAily1c9_FcwF48KzZc8oQ1tmUyZX9hqs"
+          "current_key": "AIzaSyBh8IDvtqp2lXW36vBmsypRScuoMu4ist0"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "805035245059-c43guprr0pg2i7k54eu5f1d3gil651ei.apps.googleusercontent.com",
+              "client_id": "662510283096-v3af01lvcirtloe5e9cehl6bbjm23oof.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
