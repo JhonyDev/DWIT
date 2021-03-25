@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DWIT</string>
+    <string name="app_name">Event-ify</string>
     <string name="title_activity_maps">Map</string>
     <string name="username_email">Username/Email</string>
     <string name="password">Password</string>
@@ -35,5 +35,9 @@
     <string name="contact">Contact</string>
     <string name="send_message">Send Message</string>
     <string name="events_joined">Events joined</string>
+
+    <string name="app_id">ca-app-pub-3494291433648583~3403703940</string>
+    <string name="ad_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="interstitial_ad_id">ca-app-pub-3940256099942544/1033173712</string>
 
 </resources>
